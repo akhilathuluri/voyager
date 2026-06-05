@@ -9,7 +9,7 @@ import { HandwrittenHeading } from "@/components/handwritten-heading";
 import { LoadingSkeleton } from "@/components/loading-skeleton";
 import { SearchBar } from "@/components/search-bar";
 import { SketchButton } from "@/components/sketch-button";
-import { getFeaturedCities, findCity, type City } from "@/services/geo.service";
+import { getFeaturedCities, findCitySync, type City } from "@/services/geo.service";
 import { searchDevelopers } from "@/services/search.service";
 import type { Developer } from "@/services/github.service";
 
@@ -21,7 +21,7 @@ const AnimatedGlobe = dynamic(() => import("@/components/animated-globe"), {
 export default function SearchPage() {
   const examples = useMemo(() => getFeaturedCities(), []);
   const [query, setQuery] = useState("Hyderabad");
-  const [activeCity, setActiveCity] = useState<City>(findCity("Hyderabad"));
+  const [activeCity, setActiveCity] = useState<City>(findCitySync("Hyderabad"));
   const [developers, setDevelopers] = useState<Developer[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -36,7 +36,7 @@ export default function SearchPage() {
     const timeout = window.setTimeout(async () => {
       setLoading(true);
       setError("");
-      setActiveCity(findCity(cityName));
+      setActiveCity(findCitySync(cityName));
 
       try {
         const result = await searchDevelopers(cityName);

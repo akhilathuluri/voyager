@@ -18,13 +18,91 @@ const cities: City[] = [
   { name: "Toronto", country: "Canada", lat: 43.6532, lng: -79.3832 },
 ];
 
-export function findCity(query: string): City {
+// Cache for geocoded cities to avoid repeated API calls
+const geocodeCache = new Map<string, City>();
+
+/**
+ * Geocode a city name using OpenStreetMap Nominatim API
+ */
+async function geocodeCity(cityName: string): Promise<City | null> {
+  const cacheKey = cityName.trim().toLowerCase();
+  
+  // Check cache first
+  if (geocodeCache.has(cacheKey)) {
+    return geocodeCache.get(cacheKey)!;
+  }
+
+  try {
+    const response = await fetch(
+      `https://nominatim.openstreetmap.org/search?city=${encodeURIComponent(
+        cityName
+      )}&format=json&limit=1`,
+      {
+        headers: {
+          "User-Agent": "Voyager-App/1.0",
+        },
+        next: { revalidate: 60 * 60 * 24 * 7 }, // Cache for 1 week
+      }
+    );
+
+    if (!response.ok) {
+      return null;
+    }
+
+    const data = await response.json();
+    
+    if (data && data.length > 0) {
+      const result = data[0];
+      const city: City = {
+        name: cityName.trim(),
+        country: result.display_name.split(", ").pop() || "Unknown",
+        lat: parseFloat(result.lat),
+        lng: parseFloat(result.lon),
+      };
+      
+      // Cache the result
+      geocodeCache.set(cacheKey, city);
+      
+      return city;
+    }
+
+    return null;
+  } catch (error) {
+    console.error(`Geocoding failed for ${cityName}:`, error);
+    return null;
+  }
+}
+
+export function findCitySync(query: string): City {
   const normalized = query.trim().toLowerCase();
   return (
     cities.find((city) => city.name.toLowerCase() === normalized) ??
     cities.find((city) => city.name.toLowerCase().includes(normalized)) ??
     { name: query.trim() || "Hyderabad", country: "Unknown", lat: 20, lng: 0 }
   );
+}
+
+export async function findCity(query: string): Promise<City> {
+  const normalized = query.trim().toLowerCase();
+  
+  // First, try to find in hardcoded cities
+  const hardcodedCity = 
+    cities.find((city) => city.name.toLowerCase() === normalized) ??
+    cities.find((city) => city.name.toLowerCase().includes(normalized));
+  
+  if (hardcodedCity) {
+    return hardcodedCity;
+  }
+
+  // If not found, try geocoding
+  const geocodedCity = await geocodeCity(query);
+  
+  if (geocodedCity) {
+    return geocodedCity;
+  }
+
+  // Fallback to default coordinates
+  return { name: query.trim() || "Hyderabad", country: "Unknown", lat: 20, lng: 0 };
 }
 
 export function getFeaturedCities() {

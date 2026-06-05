@@ -16,7 +16,7 @@ export async function searchDevelopers(cityName: string): Promise<DeveloperSearc
   const data = (await response.json()) as { developers: Developer[] };
 
   return {
-    city: findCity(cityName),
+    city: await findCity(cityName),
     developers: data.developers,
   };
 }
