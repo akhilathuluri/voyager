@@ -25,6 +25,11 @@ export default function SearchPage() {
   const [developers, setDevelopers] = useState<Developer[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
+  const [hasMore, setHasMore] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const perPage = 12;
 
   useEffect(() => {
     const cityName = query.trim();
@@ -36,17 +41,22 @@ export default function SearchPage() {
     const timeout = window.setTimeout(async () => {
       setLoading(true);
       setError("");
+      setCurrentPage(1);
       setActiveCity(findCitySync(cityName));
 
       try {
-        const result = await searchDevelopers(cityName);
+        const result = await searchDevelopers(cityName, 1, perPage);
         if (!controller.signal.aborted) {
           setActiveCity(result.city);
           setDevelopers(result.developers);
+          setTotalCount(result.totalCount);
+          setHasMore(result.hasMore);
         }
       } catch (searchError) {
         if (!controller.signal.aborted) {
           setDevelopers([]);
+          setTotalCount(0);
+          setHasMore(false);
           setError(
             searchError instanceof Error
               ? searchError.message
@@ -64,7 +74,30 @@ export default function SearchPage() {
       controller.abort();
       window.clearTimeout(timeout);
     };
-  }, [query]);
+  }, [query, perPage]);
+
+  const loadMoreDevelopers = async () => {
+    if (!hasMore || loadingMore) return;
+
+    setLoadingMore(true);
+    const nextPage = currentPage + 1;
+
+    try {
+      const result = await searchDevelopers(query.trim(), nextPage, perPage);
+      setDevelopers((prev) => [...prev, ...result.developers]);
+      setCurrentPage(nextPage);
+      setHasMore(result.hasMore);
+      setTotalCount(result.totalCount);
+    } catch (searchError) {
+      setError(
+        searchError instanceof Error
+          ? searchError.message
+          : "Unable to load more developers."
+      );
+    } finally {
+      setLoadingMore(false);
+    }
+  };
 
   return (
     <div className="px-5 py-16 sm:px-8 lg:px-12">
@@ -138,6 +171,8 @@ export default function SearchPage() {
             <p className="mt-3 text-secondary">
               {loading
                 ? "Fetching profiles, stars, and repository signals..."
+                : totalCount > 0
+                ? `Showing ${developers.length} of ${totalCount.toLocaleString()} developers`
                 : `${developers.length} profiles discovered`}
             </p>
           </div>
@@ -185,6 +220,37 @@ export default function SearchPage() {
             </motion.div>
           )}
         </AnimatePresence>
+
+        {/* Load More Button */}
+        {!loading && developers.length > 0 && hasMore && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mt-10 text-center"
+          >
+            <SketchButton
+              onClick={loadMoreDevelopers}
+              variant="secondary"
+              size="lg"
+              disabled={loadingMore}
+            >
+              {loadingMore ? (
+                <>
+                  <span className="inline-block h-5 w-5 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                  Loading more...
+                </>
+              ) : (
+                <>
+                  Load More Developers
+                  <span className="font-heading text-2xl">↓</span>
+                </>
+              )}
+            </SketchButton>
+            <p className="mt-4 text-sm text-secondary">
+              {totalCount - developers.length} more developers available
+            </p>
+          </motion.div>
+        )}
       </section>
     </div>
   );

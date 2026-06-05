@@ -1,7 +1,7 @@
 export function LoadingSkeleton() {
   return (
     <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-      {Array.from({ length: 6 }).map((_, index) => (
+      {Array.from({ length: 12 }).map((_, index) => (
         <div key={index} className="rounded-[1.6rem] bg-card p-5 sketch-border">
           <div className="flex justify-between">
             <div className="h-20 w-20 animate-pulse rounded-3xl bg-accent" />

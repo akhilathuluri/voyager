@@ -58,11 +58,21 @@ async function githubFetch<T>(url: string): Promise<T> {
   return response.json() as Promise<T>;
 }
 
-export async function searchGitHubDevelopers(city: string): Promise<Developer[]> {
-  const search = await githubFetch<{ items: GitHubUserSearchItem[] }>(
+export type DeveloperSearchResult = {
+  developers: Developer[];
+  totalCount: number;
+  hasMore: boolean;
+};
+
+export async function searchGitHubDevelopers(
+  city: string,
+  page: number = 1,
+  perPage: number = 12
+): Promise<DeveloperSearchResult> {
+  const search = await githubFetch<{ items: GitHubUserSearchItem[]; total_count: number }>(
     `https://api.github.com/search/users?q=${encodeURIComponent(
       `location:${city}`
-    )}&per_page=8`
+    )}&per_page=${perPage}&page=${page}`
   );
 
   const developers = await Promise.all(
@@ -103,5 +113,13 @@ export async function searchGitHubDevelopers(city: string): Promise<Developer[]>
     })
   );
 
-  return developers.sort((a, b) => b.score - a.score);
+  const sortedDevelopers = developers.sort((a, b) => b.score - a.score);
+  const totalCount = Math.min(search.total_count, 1000); // GitHub limits to 1000 results
+  const hasMore = page * perPage < totalCount;
+
+  return {
+    developers: sortedDevelopers,
+    totalCount,
+    hasMore,
+  };
 }

@@ -11,6 +11,7 @@ type SketchButtonProps = {
   type?: "button" | "submit";
   onClick?: () => void;
   className?: string;
+  disabled?: boolean;
 };
 
 export function SketchButton({
@@ -23,6 +24,7 @@ export function SketchButton({
   type = "button",
   onClick,
   className,
+  disabled = false,
 }: SketchButtonProps) {
   const classes = cn(
     "group inline-flex items-center justify-center gap-2 rounded-2xl font-bold transition duration-300 sketch-border active:scale-95",
@@ -31,10 +33,11 @@ export function SketchButton({
     variant === "primary"
       ? "bg-primary text-background shadow-hand"
       : "bg-card text-primary shadow-soft",
+    disabled && "opacity-50 cursor-not-allowed hover:translate-y-0 hover:rotate-0 hover:shadow-soft",
     className
   );
 
-  if (href) {
+  if (href && !disabled) {
     return (
       <Link className={classes} href={href} target={target}>
         {children}
@@ -47,7 +50,7 @@ export function SketchButton({
   }
 
   return (
-    <button className={classes} onClick={onClick} type={type}>
+    <button className={classes} onClick={onClick} type={type} disabled={disabled}>
       {children}
     </button>
   );
