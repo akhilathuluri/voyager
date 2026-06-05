@@ -1,26 +1,106 @@
+@import url("https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Inter:wght@400;500;600;700;800;900&family=Kalam:wght@400;700&display=swap");
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f7f2ea;
+  --card: #fffdf8;
+  --primary: #111111;
+  --secondary: #6b6b6b;
+  --accent: #e8dccf;
+  --border: rgba(0, 0, 0, 0.08);
+  --foreground: var(--primary);
 }
 
 @theme inline {
   --color-background: var(--background);
+  --color-card: var(--card);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-accent: var(--accent);
+  --color-border: var(--border);
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Caveat", "Kalam", cursive;
+  --shadow-soft: 0 20px 70px rgba(31, 24, 16, 0.08);
+  --shadow-hand: 0 18px 0 rgba(17, 17, 17, 0.08), 0 28px 75px rgba(31, 24, 16, 0.14);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.dark {
+  --background: #0e0e0e;
+  --card: #171717;
+  --primary: #f5f5f5;
+  --secondary: #a1a1a1;
+  --accent: #262626;
+  --border: rgba(255, 255, 255, 0.08);
+  --foreground: var(--primary);
+}
+
+* {
+  box-sizing: border-box;
+  border-color: var(--border);
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+  min-height: 100vh;
+  transition: background 300ms ease, color 300ms ease;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--accent), var(--primary) 12%);
+}
+
+.sketch-border {
+  position: relative;
+}
+
+.sketch-border::before {
+  border: 1.7px solid var(--border);
+  border-radius: inherit;
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+  transform: rotate(-0.35deg);
+}
+
+.sketch-border::after {
+  border: 1px solid color-mix(in srgb, var(--border), var(--primary) 12%);
+  border-radius: inherit;
+  content: "";
+  inset: 3px -2px -2px 2px;
+  pointer-events: none;
+  position: absolute;
+  transform: rotate(0.28deg);
+}
+
+.font-heading {
+  font-family: "Caveat", "Kalam", cursive;
+}
+
+.shadow-soft {
+  box-shadow: var(--shadow-soft);
+}
+
+.shadow-hand {
+  box-shadow: var(--shadow-hand);
+}
+
+.line-clamp-1 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+}
+
+@media (max-width: 640px) {
+  .sketch-border::after {
+    inset: 2px -1px -1px 1px;
+  }
 }
