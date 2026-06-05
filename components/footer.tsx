@@ -4,7 +4,7 @@ const links = [
   ["Home", "/"],
   ["Search", "/search"],
   ["About", "/about"],
-  ["GitHub", "https://github.com"],
+  ["GitHub", "https://github.com/akhilathuluri/voyager"],
 ];
 
 export function Footer() {

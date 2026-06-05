@@ -34,14 +34,14 @@ export function DeveloperCard({
           {developer.location}
         </p>
       </div>
-      <div className="mt-6 grid grid-cols-3 gap-3 text-sm">
+      <div className="mt-6 grid grid-cols-3 gap-2 text-sm sm:gap-3">
         <Stat icon={<Users size={16} />} label="Followers" value={developer.followers} />
         <Stat icon={<GitFork size={16} />} label="Repos" value={developer.publicRepos} />
         <Stat icon={<Star size={16} />} label="Stars" value={developer.stars} />
       </div>
-      <div className="mt-5 flex items-center justify-between text-sm font-bold">
-        <span>{developer.contributions.toLocaleString()} contribution estimate</span>
-        <ExternalLink className="transition group-hover:translate-x-1" size={17} />
+      <div className="mt-5 flex flex-col gap-2 text-sm font-bold sm:flex-row sm:items-center sm:justify-between">
+        <span className="text-xs sm:text-sm">{developer.contributions.toLocaleString()} contributions</span>
+        <ExternalLink className="hidden transition group-hover:translate-x-1 sm:block" size={17} />
       </div>
     </a>
   );
@@ -57,10 +57,10 @@ function Stat({
   value: number;
 }) {
   return (
-    <div className="rounded-2xl bg-accent/65 p-3">
-      <div className="mb-2 text-primary/70">{icon}</div>
-      <div className="font-bold">{value.toLocaleString()}</div>
-      <div className="text-xs text-secondary">{label}</div>
+    <div className="rounded-2xl bg-accent/65 p-2 sm:p-3">
+      <div className="mb-1 sm:mb-2 text-primary/70">{icon}</div>
+      <div className="text-sm sm:text-base font-bold">{value.toLocaleString()}</div>
+      <div className="text-[10px] sm:text-xs text-secondary">{label}</div>
     </div>
   );
 }

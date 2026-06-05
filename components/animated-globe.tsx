@@ -59,7 +59,7 @@ export default function AnimatedGlobe({ city }: { city?: City }) {
   }, [city]);
 
   return (
-    <div className="relative h-[420px] overflow-hidden rounded-[2rem] bg-card shadow-soft sketch-border sm:h-[520px]">
+    <div className="relative h-[320px] sm:h-[420px] lg:h-[520px] overflow-hidden rounded-[1.5rem] sm:rounded-[2rem] bg-card shadow-soft sketch-border">
       <Globe
         ref={globeRef as never}
         backgroundColor="rgba(0,0,0,0)"
@@ -89,7 +89,7 @@ export default function AnimatedGlobe({ city }: { city?: City }) {
         ringRepeatPeriod={950}
         width={900}
       />
-      <div className="pointer-events-none absolute inset-x-6 bottom-6 rounded-2xl bg-background/72 px-4 py-3 text-sm font-semibold backdrop-blur sketch-border">
+      <div className="pointer-events-none absolute inset-x-4 bottom-4 sm:inset-x-6 sm:bottom-6 rounded-xl sm:rounded-2xl bg-background/72 px-3 py-2 sm:px-4 sm:py-3 text-xs sm:text-sm font-semibold backdrop-blur sketch-border">
         {city ? `${city.name}, ${city.country}` : "Slowly orbiting the developer map"}
       </div>
     </div>

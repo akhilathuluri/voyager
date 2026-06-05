@@ -35,40 +35,42 @@ const steps = [
 export default function Home() {
   return (
     <div className="overflow-hidden">
-      <section className="relative min-h-[calc(100vh-88px)] px-5 py-20 sm:px-8 lg:px-12">
+      <section className="relative min-h-[calc(100vh-88px)] px-5 py-12 sm:py-20 sm:px-8 lg:px-12">
         <DoodleBackground />
         <div className="mx-auto flex max-w-7xl flex-col items-center text-center">
-          <span className="mb-8 inline-flex items-center gap-2 rounded-full bg-card px-4 py-2 text-sm text-secondary shadow-soft sketch-border">
-            <Sparkles size={16} /> Handcrafted GitHub discovery
+          <span className="mb-6 sm:mb-8 inline-flex items-center gap-2 rounded-full bg-card px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm text-secondary shadow-soft sketch-border">
+            <Sparkles size={14} className="sm:hidden" />
+            <Sparkles size={16} className="hidden sm:block" />
+            Handcrafted GitHub discovery
           </span>
-          <HandwrittenHeading className="max-w-5xl text-6xl leading-[0.92] sm:text-8xl lg:text-[8.8rem]">
+          <HandwrittenHeading className="max-w-5xl text-5xl leading-[0.95] sm:text-6xl sm:leading-[0.92] lg:text-8xl xl:text-[8.8rem]">
             Rank the best developers in any city.
           </HandwrittenHeading>
-          <p className="mt-8 max-w-3xl text-lg leading-8 text-secondary sm:text-xl">
+          <p className="mt-6 sm:mt-8 max-w-3xl text-base sm:text-lg leading-7 sm:leading-8 text-secondary px-4 sm:px-0 sm:text-xl">
             Discover the most active GitHub developers around the world using
             followers, repositories, stars and contributions.
           </p>
-          <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row">
-            <SketchButton href="/search" size="lg">
-              Explore Rankings <ArrowDownRight size={20} />
+          <div className="mt-8 sm:mt-10 flex flex-col w-full sm:w-auto items-center gap-3 sm:gap-4 px-4 sm:px-0 sm:flex-row">
+            <SketchButton href="/search" size="lg" className="w-full sm:w-auto">
+              Explore Rankings <ArrowDownRight size={18} className="sm:hidden" /><ArrowDownRight size={20} className="hidden sm:block" />
             </SketchButton>
-            <SketchButton href="#how-it-works" variant="secondary" size="lg">
-              How it Works <span className="font-heading text-2xl">↝</span>
+            <SketchButton href="#how-it-works" variant="secondary" size="lg" className="w-full sm:w-auto">
+              How it Works <span className="font-heading text-xl sm:text-2xl">↝</span>
             </SketchButton>
           </div>
         </div>
       </section>
 
-      <section className="px-5 py-16 sm:px-8 lg:px-12">
-        <div className="mx-auto grid max-w-7xl items-center gap-10 lg:grid-cols-[1.05fr_0.95fr]">
-          <div className="min-h-[420px]">
+      <section className="px-5 py-12 sm:py-16 sm:px-8 lg:px-12">
+        <div className="mx-auto grid max-w-7xl items-center gap-8 lg:gap-10 lg:grid-cols-[1.05fr_0.95fr]">
+          <div className="min-h-[320px] sm:min-h-[420px] order-2 lg:order-1">
             <GlobePanel />
           </div>
-          <div>
-            <HandwrittenHeading className="text-5xl sm:text-7xl">
+          <div className="order-1 lg:order-2">
+            <HandwrittenHeading className="text-4xl sm:text-5xl lg:text-7xl">
               Explore talent worldwide.
             </HandwrittenHeading>
-            <p className="mt-6 max-w-xl text-lg leading-8 text-secondary">
+            <p className="mt-4 sm:mt-6 max-w-xl text-base sm:text-lg leading-7 sm:leading-8 text-secondary">
               A slow spinning atlas for software communities, marked with the
               cities where builders are shaping the open web.
             </p>
@@ -76,44 +78,44 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="px-5 py-20 sm:px-8 lg:px-12">
+      <section className="px-5 py-12 sm:py-20 sm:px-8 lg:px-12">
         <div className="mx-auto max-w-7xl">
-          <div className="mb-10 flex items-end justify-between gap-6">
-            <HandwrittenHeading className="text-5xl sm:text-6xl">
+          <div className="mb-8 sm:mb-10 flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4 sm:gap-6">
+            <HandwrittenHeading className="text-4xl sm:text-5xl lg:text-6xl">
               Why Voyager feels different
             </HandwrittenHeading>
             <GitBranch className="hidden text-primary/30 sm:block" size={54} />
           </div>
-          <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+          <div className="grid gap-4 sm:gap-5 sm:grid-cols-2 xl:grid-cols-4">
             {features.map((feature, index) => (
               <SketchCard key={feature.title} delay={index * 0.08}>
-                <div className="mb-8 h-12 w-12 rounded-2xl bg-accent p-3 sketch-border">
+                <div className="mb-6 sm:mb-8 h-10 w-10 sm:h-12 sm:w-12 rounded-2xl bg-accent p-2.5 sm:p-3 sketch-border">
                   <MapPin className="h-full w-full" />
                 </div>
-                <h3 className="text-2xl font-bold tracking-tight">
+                <h3 className="text-xl sm:text-2xl font-bold tracking-tight">
                   {feature.title}
                 </h3>
-                <p className="mt-4 leading-7 text-secondary">{feature.body}</p>
+                <p className="mt-3 sm:mt-4 text-sm sm:text-base leading-6 sm:leading-7 text-secondary">{feature.body}</p>
               </SketchCard>
             ))}
           </div>
         </div>
       </section>
 
-      <section id="how-it-works" className="px-5 py-20 sm:px-8 lg:px-12">
+      <section id="how-it-works" className="px-5 py-12 sm:py-20 sm:px-8 lg:px-12">
         <div className="mx-auto max-w-5xl">
-          <HandwrittenHeading className="text-center text-5xl sm:text-7xl">
+          <HandwrittenHeading className="text-center text-4xl sm:text-5xl lg:text-7xl">
             How rankings work
           </HandwrittenHeading>
-          <div className="mt-14 grid gap-6 md:grid-cols-4">
+          <div className="mt-10 sm:mt-14 grid gap-4 sm:gap-6 grid-cols-2 md:grid-cols-4">
             {steps.map((step, index) => (
-              <div key={step} className="relative rounded-[1.5rem] bg-card p-6 sketch-border">
-                <span className="font-heading text-5xl text-primary/30">
+              <div key={step} className="relative rounded-[1.5rem] bg-card p-4 sm:p-6 sketch-border">
+                <span className="font-heading text-4xl sm:text-5xl text-primary/30">
                   0{index + 1}
                 </span>
-                <h3 className="mt-5 text-xl font-bold">{step}</h3>
+                <h3 className="mt-3 sm:mt-5 text-base sm:text-xl font-bold">{step}</h3>
                 {index < steps.length - 1 ? (
-                  <span className="absolute -right-5 top-1/2 hidden font-heading text-5xl text-primary/40 md:block">
+                  <span className="absolute -right-3 sm:-right-5 top-1/2 hidden font-heading text-3xl sm:text-5xl text-primary/40 md:block">
                     ↝
                   </span>
                 ) : null}
@@ -123,14 +125,14 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="px-5 py-24 sm:px-8 lg:px-12">
-        <div className="mx-auto flex max-w-5xl flex-col items-center rounded-[2rem] bg-card px-6 py-16 text-center shadow-soft sketch-border">
-          <HandwrittenHeading className="text-5xl sm:text-7xl">
+      <section className="px-5 py-16 sm:py-24 sm:px-8 lg:px-12">
+        <div className="mx-auto flex max-w-5xl flex-col items-center rounded-[2rem] bg-card px-5 py-12 sm:px-6 sm:py-16 text-center shadow-soft sketch-border">
+          <HandwrittenHeading className="text-4xl sm:text-5xl lg:text-7xl">
             Ready to discover developers?
           </HandwrittenHeading>
-          <Link href="/search" className="mt-9">
-            <SketchButton as="span" size="lg">
-              Start Exploring <ArrowDownRight size={20} />
+          <Link href="/search" className="mt-7 sm:mt-9 w-full sm:w-auto">
+            <SketchButton as="span" size="lg" className="w-full sm:w-auto">
+              Start Exploring <ArrowDownRight size={18} className="sm:hidden" /><ArrowDownRight size={20} className="hidden sm:block" />
             </SketchButton>
           </Link>
         </div>
